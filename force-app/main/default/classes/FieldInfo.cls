@@ -6,6 +6,11 @@ public with sharing class FieldInfo {
       
         @AuraEnabled
         public String value {get;set;}
+
+        public PicklistItem(String label, String value) {
+            this.label = label;
+            this.value = value;
+        }
     }
 
     @AuraEnabled
@@ -35,7 +40,7 @@ public with sharing class FieldInfo {
       this.required = fieldSetMember.getRequired();
       this.dataType = fieldSetMember.getType().name();
   
-      if(this.dataType == Schema.DisplayType.Picklist) {
+      if(this.dataType == Schema.DisplayType.Picklist.name()) {
         this.isPicklist = true;
         
         this.picklistValues = new List<PicklistItem>();
