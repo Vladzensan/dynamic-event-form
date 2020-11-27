@@ -14,17 +14,17 @@
                 </lightning-combobox>
             </template>
   
-        <template if:false={field.isPicklist}>
-            <lightning-input label={field.label} 
-                            name={field.apiName}
-                            key={field.apiName}
-                            required={field.required}
-                            type={field.dataType}
-                            value={field.value}
-                            checked={field.value}
-                            onchange={onFieldValueChange}>
-            </lightning-input>
-        </template>
+            <template if:false={field.isPicklist}>
+                <lightning-input label={field.label} 
+                                name={field.apiName}
+                                key={field.apiName}
+                                required={field.required}
+                                type={field.dataType}
+                                value={field.value}
+                                checked={field.value}
+                                onchange={onFieldValueChange}>
+                </lightning-input>
+            </template>
           
         </template>
   

@@ -31,7 +31,6 @@ public with sharing class EventController {
 
     @AuraEnabled(cacheable = false)
     public static void saveEvent(Event event){
-        system.debug(event);
         upsert event;
     }
     

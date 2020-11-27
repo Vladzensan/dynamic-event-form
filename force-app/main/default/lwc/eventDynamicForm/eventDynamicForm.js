@@ -36,7 +36,7 @@ export default class EventDynamicForm extends LightningElement {
     setInputTypes(fields) {
         for(var i = 0; i < fields.length; i++) {
                 fields[i].dataType = this.transformTypeToLightning(fields[i].dataType);
-          }
+        }
 
     }
 
@@ -81,7 +81,8 @@ export default class EventDynamicForm extends LightningElement {
         
                 this.showToast("Success",
                                 EVENT_SAVE_SUCCESS,
-                                "success")
+                                "success");
+                this.sendReturnEvent();
                 })
             .catch(error => {
         
@@ -89,6 +90,11 @@ export default class EventDynamicForm extends LightningElement {
                                 EVENT_SAVE_ERROR,
                                 "error");
             });
+    }
+
+    sendReturnEvent() {
+        const returnEvent = new CustomEvent('return', {});
+        this.dispatchEvent(returnEvent);
     }
 
     showToast(title, message, variant) {
