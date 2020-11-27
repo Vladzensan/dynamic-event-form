@@ -1,5 +1,6 @@
 import { LightningElement, api,track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import ID_FIELD from '@salesforce/schema/Event.Id';
 import getFieldsInfo from '@salesforce/apex/EventController.getFields';
 import saveEvent from '@salesforce/apex/EventController.saveEvent';
 
@@ -10,7 +11,7 @@ const EVENT_SAVE_ERROR = "Error occurred while saving event";
 export default class EventDynamicForm extends LightningElement {
     @api eventId;
     @track fieldInfos;
-    eventRecord = new Map();
+    eventRecord = {};
 
     connectedCallback() {
         this.fetchEventFields(this.eventId);
@@ -53,7 +54,11 @@ export default class EventDynamicForm extends LightningElement {
 
     initEventRecord(fields) {
         for(var i = 0; i < fields.length; i++) {
-            this.eventRecord.set(fields[i].apiName, fields[i].value);
+            this.eventRecord[fields[i].apiName] = fields[i].value;
+        }
+
+        if(this.eventId != null) {
+            this.eventRecord[ID_FIELD.fieldApiName] = this.eventId;
         }
     }
 
@@ -62,27 +67,27 @@ export default class EventDynamicForm extends LightningElement {
 
         if(evt.target.type === "number") {
             value = +value;
+        } else if (evt.target.type === "checkbox") {
+            value = evt.target.checked;
         }
 
-        this.eventRecord.set(evt.target.name, value);
-        console.log(JSON.stringify([...this.eventRecord]));
+        this.eventRecord[evt.target.name] = value;
+        console.log(JSON.stringify(this.eventRecord));
     }
 
     saveEvent() {
-        var toSave = Object.fromEntries(this.eventRecord);
-        console.log(JSON.stringify(toSave));
-        saveEvent({event : toSave})
+        saveEvent({event : this.eventRecord})
             .then((response) => {
         
                 this.showToast("Success",
-                                    EVENT_SAVE_SUCCESS,
-                                    "success")
+                                EVENT_SAVE_SUCCESS,
+                                "success")
                 })
             .catch(error => {
         
                 this.showToast("Error", 
-                                    EVENT_SAVE_ERROR,
-                                    "error");
+                                EVENT_SAVE_ERROR,
+                                "error");
             });
     }
 
