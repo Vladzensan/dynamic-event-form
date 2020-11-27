@@ -1,0 +1,41 @@
+<template>
+    <lightning-card title="Event Editor">
+          <div class="slds-card__body_inner">
+  
+        <template for:each={fieldInfos} for:item="field">
+  
+            <template if:true={field.isPicklist}>
+                <lightning-combobox name={field.apiName}
+                                    label={field.label}
+                                    value={field.value}
+                                    options={field.picklistValues}
+                                    key={field.apiName}
+                                    onchange={onFieldValueChange}>
+                </lightning-combobox>
+            </template>
+  
+        <template if:false={field.isPicklist}>
+            <lightning-input label={field.label} 
+                            name={field.apiName}
+                            key={field.apiName}
+                            required={field.required}
+                            type={field.dataType}
+                            value={field.value}
+                            checked={field.value}
+                            onchange={onFieldValueChange}>
+            </lightning-input>
+        </template>
+          
+        </template>
+  
+        <div class="slds-align_absolute-center slds-var-m-top_small">
+            <lightning-button onclick={saveEvent}
+                                variant="brand" 
+                                label="Save event">
+            </lightning-button>
+        </div>
+    
+      </div>
+    </lightning-card>
+  
+  </template>

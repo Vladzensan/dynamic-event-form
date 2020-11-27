@@ -28,5 +28,11 @@ public with sharing class EventController {
             fieldInfo.value = event.get(fieldInfo.apiName);
         }
     }
+
+    @AuraEnabled(cacheable = false)
+    public static void saveEvent(Event event){
+        system.debug(event);
+        upsert event;
+    }
     
 }
